@@ -16,11 +16,27 @@ public class ShoppingBasket extends AppCompatActivity {
     private ArrayList<Item> basket;
 
     public ShoppingBasket() {
-        basket = new ArrayList<Item>();
+        this.basket = new ArrayList<Item>();
     }
 
     public ArrayList<Item> getBasket() {
         return new ArrayList<Item>(basket);
+    }
+
+    public void addItemtoBasket(Item item) {
+        basket.add(item);
+    }
+
+    public void removeItemFromBasket(int arrayPosition){
+        basket.remove(arrayPosition);
+    }
+
+    public int basketSize() {
+        return basket.size();
+    }
+
+    public void emptyBasket() {
+        basket.clear();
     }
 
 

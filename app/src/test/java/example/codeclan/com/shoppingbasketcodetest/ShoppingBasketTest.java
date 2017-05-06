@@ -14,11 +14,14 @@ import static junit.framework.Assert.assertEquals;
 public class ShoppingBasketTest {
 
     Item item;
-    ArrayList<Item> basket;
+    ShoppingBasket basket;
 
     @Before
     public void before() {
-        this.item = new Item("Amazon Kindle", 50);
+        item = new Item("Amazon Kindle", 50);
+        basket = new ShoppingBasket();
+        basket.addItemtoBasket(new Item("xbox one", 300));
+        basket.addItemtoBasket(item);
     }
 
     @Test
@@ -33,20 +36,21 @@ public class ShoppingBasketTest {
 
     @Test
     public void addItemtoBasket() {
-        basket = new ArrayList<Item>();
-        basket.add(new Item("xbox one", 300));
-        basket.add(item);
-        assertEquals(2, basket.size() );
+        assertEquals(2, basket.basketSize() );
     }
 
     @Test
     public void removeItemFromBasket() {
-        basket = new ArrayList<Item>();
-        basket.add(new Item("xbox one", 300));
-        basket.add(item);
-        basket.add(new Item("ps4", 300));
-        basket.remove(0);
-        assertEquals(2, basket.size() );
+        basket.addItemtoBasket(new Item("ps4", 300));
+        basket.removeItemFromBasket(0);
+        assertEquals(2, basket.basketSize() );
+    }
+
+    @Test
+    public void emptyBasket() {
+        basket.addItemtoBasket(new Item("ps4", 300));
+        basket.emptyBasket();
+        assertEquals(0, basket.basketSize() );
     }
 
 
