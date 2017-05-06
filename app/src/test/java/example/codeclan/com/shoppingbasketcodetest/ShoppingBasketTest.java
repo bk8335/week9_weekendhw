@@ -83,6 +83,14 @@ public class ShoppingBasketTest {
         assertEquals(343, discountedBasket, 0.01 );
     }
 
+    @Test
+    public void saveTenPercentandTwoPercentLoaylty() {
+        double undiscounted = basket.basketValue();
+        double discountedBasket1 = tenPercentOff.percentageOffDiscount(undiscounted);
+        double discountedBasket2 = loyaltyCard.loyaltyCardDiscount(discountedBasket1, true);
+        assertEquals(308.7, discountedBasket2, 0.01);
+    }
+
 
 //    remove item by its title
 //    start implementing discountable and the different discount codes
