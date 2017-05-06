@@ -16,6 +16,7 @@ public class ShoppingBasketTest {
     Item item;
     ShoppingBasket basket;
     XPercentOff tenPercentOff;
+    LoyaltyCard loyaltyCard;
 
     @Before
     public void before() {
@@ -24,6 +25,7 @@ public class ShoppingBasketTest {
         basket.addItemtoBasket(new Item("xbox one", 300));
         basket.addItemtoBasket(item);
         tenPercentOff = new XPercentOff();
+        loyaltyCard = new LoyaltyCard();
     }
 
     @Test
@@ -71,8 +73,16 @@ public class ShoppingBasketTest {
         double discountedBasket = tenPercentOff.percentageOffDiscount(undiscounted);
 
         assertEquals(315, discountedBasket, 0.01);
-
     }
+
+
+    @Test
+    public void loyaltyCardSaveTwoPercent() {
+        double undiscounted = basket.basketValue();
+        double discountedBasket = loyaltyCard.loyaltyCardDiscount(undiscounted, true);
+        assertEquals(343, discountedBasket, 0.01 );
+    }
+
 
 //    remove item by its title
 //    start implementing discountable and the different discount codes
