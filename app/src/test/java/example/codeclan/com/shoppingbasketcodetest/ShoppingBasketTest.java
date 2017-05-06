@@ -15,6 +15,7 @@ public class ShoppingBasketTest {
 
     Item item;
     ShoppingBasket basket;
+    XPercentOff tenPercentOff;
 
     @Before
     public void before() {
@@ -22,6 +23,7 @@ public class ShoppingBasketTest {
         basket = new ShoppingBasket();
         basket.addItemtoBasket(new Item("xbox one", 300));
         basket.addItemtoBasket(item);
+        tenPercentOff = new XPercentOff();
     }
 
     @Test
@@ -49,11 +51,31 @@ public class ShoppingBasketTest {
     @Test
     public void emptyBasket() {
         basket.addItemtoBasket(new Item("ps4", 300));
+        assertEquals(3, basket.basketSize() );
+
         basket.emptyBasket();
         assertEquals(0, basket.basketSize() );
     }
 
+    @Test
+    public void valueofShoppingbasketis350() {
+        double cost = basket.basketValue();
+        assertEquals(350, cost, 0.01 );
+    }
 
+    @Test
+    public void saveTenPercent() {
+        double undiscounted = basket.basketValue();
+        assertEquals(350, undiscounted, 0.01);
+
+        double discountedBasket = tenPercentOff.percentageOffDiscount(undiscounted);
+
+        assertEquals(315, discountedBasket, 0.01);
+
+    }
+
+//    remove item by its title
+//    start implementing discountable and the different discount codes
 
 
 }

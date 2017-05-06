@@ -39,6 +39,14 @@ public class ShoppingBasket extends AppCompatActivity {
         basket.clear();
     }
 
+    public double basketValue() {
+        int initialValue = 0;
+        for(Item item: basket){
+            initialValue += item.getPrice();
+        }
+        return initialValue;
+    }
+
 
 
 
