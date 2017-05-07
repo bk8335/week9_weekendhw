@@ -7,7 +7,7 @@ package example.codeclan.com.shoppingbasketcodetest;
 public class Item {
 
     private String title;
-    private int price;
+    private double price;
 
     public Item(String title, int price) {
         this.title = title;
@@ -18,12 +18,17 @@ public class Item {
         return this.title;
     }
 
+    public double setPrice(double newPrice) {
+        this.price = newPrice;
+        return this.price;
+    }
+
     public String setTitle(String newTitle) {
         this.title = newTitle;
         return this.title;
     }
 
-    public int getPrice() {
+    public double getPrice() {
         return this.price;
     }
 

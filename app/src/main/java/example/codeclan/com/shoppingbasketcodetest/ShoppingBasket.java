@@ -31,6 +31,15 @@ public class ShoppingBasket extends AppCompatActivity {
         basket.remove(arrayPosition);
     }
 
+    public Item findItemInBasket(String itemTitle) {
+        for(Item item: basket){
+            if(itemTitle == item.getTitle()){
+                return item;
+            }
+        }
+        return null;
+    }
+
     public int basketSize() {
         return basket.size();
     }

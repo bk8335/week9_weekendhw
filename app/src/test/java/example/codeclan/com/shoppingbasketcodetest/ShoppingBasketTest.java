@@ -4,6 +4,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import static junit.framework.Assert.assertEquals;
 
@@ -17,25 +18,28 @@ public class ShoppingBasketTest {
     ShoppingBasket basket;
     XPercentOff tenPercentOff;
     LoyaltyCard loyaltyCard;
+    BOGOF bOGOF;
+
 
     @Before
     public void before() {
-        item = new Item("Amazon Kindle", 50);
+        item = new Item("kindle", 50);
         basket = new ShoppingBasket();
         basket.addItemtoBasket(new Item("xbox one", 300));
         basket.addItemtoBasket(item);
         tenPercentOff = new XPercentOff();
         loyaltyCard = new LoyaltyCard();
+        bOGOF = new BOGOF();
     }
 
     @Test
     public void hasTitle() {
-        assertEquals("Amazon Kindle", item.getTitle() );
+        assertEquals("kindle", item.getTitle() );
     }
 
     @Test
     public void getPrice() {
-        assertEquals(50, item.getPrice() );
+        assertEquals(50, item.getPrice(), 0.01 );
     }
 
     @Test
@@ -45,14 +49,14 @@ public class ShoppingBasketTest {
 
     @Test
     public void removeItemFromBasket() {
-        basket.addItemtoBasket(new Item("ps4", 300));
+        basket.addItemtoBasket(new Item("ps4", 400));
         basket.removeItemFromBasket(0);
         assertEquals(2, basket.basketSize() );
     }
 
     @Test
     public void emptyBasket() {
-        basket.addItemtoBasket(new Item("ps4", 300));
+        basket.addItemtoBasket(new Item("ps4", 400));
         assertEquals(3, basket.basketSize() );
 
         basket.emptyBasket();
@@ -66,6 +70,26 @@ public class ShoppingBasketTest {
     }
 
     @Test
+    public void findItemInBasketbyTitle() {
+        basket.addItemtoBasket(new Item("ps4", 400));
+        Item searched = basket.findItemInBasket("kindle");
+        assertEquals("kindle", searched.getTitle());
+    }
+
+//    creates null pointer exception, which is what we want (as can only return an item type)
+//    @Test
+//    public void findItemDoesNotExist() {
+//        Item searched = basket.findItemInBasket("bla bla bla");
+//        assertEquals(null, searched.getTitle());
+//    }
+
+    @Test
+    public void findItemReturnPrice() {
+        Item searched = basket.findItemInBasket("xbox one");
+        assertEquals(300, searched.getPrice(), 0.01);
+    }
+
+    @Test
     public void saveTenPercent() {
         double undiscounted = basket.basketValue();
         assertEquals(350, undiscounted, 0.01);
@@ -74,7 +98,6 @@ public class ShoppingBasketTest {
 
         assertEquals(315, discountedBasket, 0.01);
     }
-
 
     @Test
     public void loyaltyCardSaveTwoPercent() {
@@ -91,9 +114,65 @@ public class ShoppingBasketTest {
         assertEquals(308.7, discountedBasket2, 0.01);
     }
 
+//    @Test
+//    public void BOGOFImplemented() {
+//
+//        double originalBasket = basket.basketValue();
+//        assertEquals(350, originalBasket, 0.01);
+//        Item kindle2 = new Item("Amazon Kindle", 50);
+//
+//        bOGOF.buyOneGetOneFree(kindle2);
+//
+//        basket.addItemtoBasket(kindle2);
+//
+//        double updatedBasket = basket.basketValue();
+//        assertEquals(350, updatedBasket, 0.01 );
+//    }
+
 
 //    remove item by its title
 //    start implementing discountable and the different discount codes
 
+
+
+    @Test
+    public void convertBasketToHash() {
+        HashMap result = bOGOF.basketToHash(basket.getBasket());
+        assertEquals(2, result.size());
+    }
+
+    @Test
+    public void cannotAddTwoOfSameItemToHash() {
+        basket.addItemtoBasket(new Item("kindle", 50));
+        basket.addItemtoBasket(new Item("batman", 500));
+        HashMap result = bOGOF.basketToHash(basket.getBasket());
+        assertEquals(3, result.size());
+    }
+
+    @Test
+    public void basketToHashValue() {
+        HashMap input = bOGOF.basketToHash(basket.getBasket());
+        assertEquals(350, bOGOF.basketToHashValue(input), 0.01);
+    }
+
+    @Test
+    public void basketToHashValueWithTwoOfSameItem() {
+        basket.addItemtoBasket(new Item("kindle", 50));
+        HashMap startingBasket = bOGOF.basketToHash(basket.getBasket());
+        double hashValue = bOGOF.basketToHashValue(startingBasket);
+        assertEquals(350, hashValue, 0.01);
+    }
+
+    @Test
+    public void applyAllDiscountsAtOnce() {
+        basket.addItemtoBasket(new Item("kindle", 50));
+        basket.addItemtoBasket(new Item("kindle2", 50));
+        basket.addItemtoBasket(new Item("kindle2", 50));
+        HashMap startingBasket = bOGOF.basketToHash(basket.getBasket());
+        double hashValue = bOGOF.basketToHashValue(startingBasket);
+        double discountedBasket1 = tenPercentOff.percentageOffDiscount(hashValue);
+        double discountedBasket2 = loyaltyCard.loyaltyCardDiscount(discountedBasket1, true);
+        assertEquals(352.8, discountedBasket2, 0.01);
+    }
 
 }
