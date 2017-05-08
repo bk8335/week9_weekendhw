@@ -76,7 +76,13 @@ public class ShoppingBasketTest {
         assertEquals("kindle", searched.getTitle());
     }
 
-//    creates null pointer exception, which is what we want (as can only return an item type)
+//    @Test
+//    public void removeItembyTitle() {
+//        basket.removeItemFromBasketByTitle("kindle");
+//        assertEquals(1, basket.basketSize());
+//    }
+//
+////    creates null pointer exception, which is what we want (as can only return an item type - better way out there?)
 //    @Test
 //    public void findItemDoesNotExist() {
 //        Item searched = basket.findItemInBasket("bla bla bla");
@@ -113,26 +119,6 @@ public class ShoppingBasketTest {
         double discountedBasket2 = loyaltyCard.loyaltyCardDiscount(discountedBasket1, true);
         assertEquals(308.7, discountedBasket2, 0.01);
     }
-
-//    @Test
-//    public void BOGOFImplemented() {
-//
-//        double originalBasket = basket.basketValue();
-//        assertEquals(350, originalBasket, 0.01);
-//        Item kindle2 = new Item("Amazon Kindle", 50);
-//
-//        bOGOF.buyOneGetOneFree(kindle2);
-//
-//        basket.addItemtoBasket(kindle2);
-//
-//        double updatedBasket = basket.basketValue();
-//        assertEquals(350, updatedBasket, 0.01 );
-//    }
-
-
-//    remove item by its title
-//    start implementing discountable and the different discount codes
-
 
 
     @Test

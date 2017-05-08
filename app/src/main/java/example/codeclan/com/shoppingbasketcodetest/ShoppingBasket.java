@@ -31,6 +31,16 @@ public class ShoppingBasket extends AppCompatActivity {
         basket.remove(arrayPosition);
     }
 
+//    NEED TO ADD .next to this method to avoid a concurrent modification exception
+
+//    public void removeItemFromBasketByTitle(String itemTitle) {
+//        for(Item item: basket){
+//            if(itemTitle == item.getTitle()){
+//                basket.remove(item);
+//            }
+//        }
+//    }
+
     public Item findItemInBasket(String itemTitle) {
         for(Item item: basket){
             if(itemTitle == item.getTitle()){
